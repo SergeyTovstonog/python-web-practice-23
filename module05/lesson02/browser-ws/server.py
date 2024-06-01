@@ -5,6 +5,7 @@ import websockets
 
 
 async def handler(websocket, path):
+    print(path)
     data = await websocket.recv()
     reply = f"Data recieved as:  {data}!"
     print(reply)

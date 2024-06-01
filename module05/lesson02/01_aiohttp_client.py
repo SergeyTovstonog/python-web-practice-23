@@ -2,7 +2,7 @@ import aiohttp
 import asyncio
 import platform
 
-urls = ['https://www.google.com', 'https://www.python.org/asdf', 'https://duckduckgo.com', 'http://test']
+urls = ['https://www.google.com', 'https://www.python.org/asdf', 'https://duckduckgo.com', 'test']
 
 
 async def main():
@@ -10,7 +10,7 @@ async def main():
         for url in urls:
             print(f'Starting {url}')
             try:
-                async with session.get(url) as resp:
+                async with session.get(url, ssl=False) as resp:
                     if resp.status == 200:
                         html = await resp.text()
                         print(url, html[:150])
