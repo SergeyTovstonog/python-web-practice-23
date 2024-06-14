@@ -33,6 +33,7 @@ if __name__ == '__main__':
 
         user_select = select(users)
         result = conn.execute(user_select)
+        print(result)
         for row in result:
             print(row)
 
@@ -44,7 +45,7 @@ if __name__ == '__main__':
         result = conn.execute(address_select)
         for row in result:
             print(row)
-
+        #
         print('Знайти address of user')
         address_select = select(addresses.c.email_address, users.c.fullname).join(users)
         print(str(address_select))

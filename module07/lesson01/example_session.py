@@ -1,7 +1,9 @@
 """
 SQLAlchemy session
 """
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+import datetime
+
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 
 engine = create_engine('sqlite:///:memory:', echo=False)
@@ -11,10 +13,15 @@ session = DBSession()
 Base = declarative_base()
 
 
+class CreatedAt:
+    created_at = Column(DateTime, default=datetime.datetime.now())
+
+
 class Person(Base):
     __tablename__ = 'persons'
     id = Column(Integer, primary_key=True)
     fullname = Column(String(250), nullable=False)
+    address = relationship("Address", back_populates='person')
 
 
 class Address(Base):
@@ -23,7 +30,7 @@ class Address(Base):
     street_name = Column(String(250))
     post_code = Column(String(250), nullable=False)
     person_id = Column(Integer, ForeignKey('persons.id'))
-    person = relationship(Person)
+    person = relationship("Person", back_populates='address')
 
 
 '''
@@ -47,17 +54,19 @@ if __name__ == '__main__':
 
     # session.commit()
 
-    new_address = Address(post_code='36065', street_name='Mazepa', person=new_person)
+    new_address = Address(post_code='36065', street_name='Mazepa', person_id=new_person.id)
     session.add(new_address)
     session.commit()
 
     '''Щоб отримати дані з бази, можна скористатися методом query:'''
     print('Знайти користувача')
     person = session.query(Person).one()
-    print(person.id, person.fullname)
+
+    print(person.id, person.fullname, person.address.post_code)
     print('Знайти адреси з користувачами')
     # addresses = session.query(Address).join(Address.person).all()
     addresses = session.query(Address).all()
     for address in addresses:
         print(
             f"id: {address.id}, code: {address.post_code}, street: {address.street_name}, owner: {address.person.fullname}")
+
