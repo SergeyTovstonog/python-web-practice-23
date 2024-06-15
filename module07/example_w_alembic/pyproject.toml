@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pythonproject54"
+version = "0.1.0"
+description = ""
+authors = ["Sergey Tovstonog <s.tovstonog@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+setuptools = "^70.0.0"
+psycopg2-binary = "^2.9.9"
+sqlalchemy = "^2.0.30"
+alembic = "^1.13.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
