@@ -5,13 +5,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.common.by import By
 
-service = Service('chromedriver.exe')
+
 options = webdriver.ChromeOptions()
 options.add_argument('--headless=chrome')
 
 if __name__ == '__main__':
 
-    with webdriver.Chrome(service=service, options=options) as driver:
+    with webdriver.Chrome(options=options) as driver:
         driver.get("http://quotes.toscrape.com/login")
         WebDriverWait(driver, 10).until(ec.presence_of_element_located((By.ID, "password")))
         username = driver.find_element(by=By.ID, value="username")

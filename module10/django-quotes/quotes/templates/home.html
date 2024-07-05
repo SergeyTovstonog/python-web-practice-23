@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h2>All Quotes</h2>
+<ul>
+    {% for quote in quotes %}
+        <li>
+            <strong>{{ quote.text }}</strong> - <em>{{ quote.author.name }}</em>
+            <br>
+            Tags:
+            {% for tag in quote.tags.all %}
+                <span class="badge badge-info">{{ tag.name }}</span>
+            {% endfor %}
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

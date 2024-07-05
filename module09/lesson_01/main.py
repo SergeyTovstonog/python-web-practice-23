@@ -41,12 +41,14 @@ def spider(urls):
                 title = title.strip()
                 quantity = re.search(r"\d+", quantity).group()
                 result.update({title: quantity})
+                print(result)
             data.append(result)
     return data
 
 
 if __name__ == '__main__':
     urls_for_parser = get_url()
+    print(urls_for_parser)
     r = spider(urls_for_parser)
-    with open('moskali.json', 'w', encoding='utf-8') as fd:
-        json.dump(r, fd, ensure_ascii=False)
+    # with open('moskali.json', 'w', encoding='utf-8') as fd:
+    #     json.dump(r, fd, ensure_ascii=False)

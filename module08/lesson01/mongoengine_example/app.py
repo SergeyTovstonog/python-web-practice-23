@@ -101,12 +101,6 @@ def main():
     except DoesNotExist:
         print("Документ не найден")
 
-
-if __name__ == '__main__':
-    main()
-    # print(find_by_id("6499b6b23058b87bd04e0ddb"))
-    # print(find_by_id("6499ba8236f0342efd46ec5f").to_mongo().to_dict())
-
     # Если вы не уверены, что документ с таким ID существует, вы можете использовать метод first вместо get.
     # Если документ не найден, first просто вернет None, не вызывая исключения:
     doc = Cat.objects(id='6499b6b23058b87bd04e0ddb').first()

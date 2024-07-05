@@ -4,7 +4,10 @@ import scrapy
 from itemadapter import ItemAdapter
 from scrapy.crawler import CrawlerProcess
 from scrapy.item import Item, Field
+from scrapyscript import Job, Processor
 
+
+processor = Processor(settings=None)
 
 class QuoteItem(Item):
     keywords = Field()
@@ -51,7 +54,7 @@ class QuotesSpider(scrapy.Spider):
     name = 'authors'
     allowed_domains = ['quotes.toscrape.com']
     start_urls = ['http://quotes.toscrape.com/']
-    custom_settings = {"ITEM_PIPELINES": {QuotesPipline: 300}}
+    # custom_settings = {"ITEM_PIPELINES": {QuotesPipline: 300}}
 
     def parse(self, response, *args):
         for quote in response.xpath("/html//div[@class='quote']"):
@@ -75,6 +78,6 @@ class QuotesSpider(scrapy.Spider):
 
 
 if __name__ == '__main__':
-    process = CrawlerProcess()
-    process.crawl(QuotesSpider)
-    process.start()
+    job = Job(QuotesSpider)
+    results = processor.run(job)
+    print(results)
