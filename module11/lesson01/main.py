@@ -2,7 +2,7 @@ import time
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException, status, Path, Query, Request
-from sqlalchemy import text
+from sqlalchemy import text, select
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr, Field
 
@@ -63,7 +63,7 @@ async def get_owners(db: Session = Depends(get_db)):
 
 
 @app.get("/owners/{owner_id}", response_model=ResponseOwner, tags=['owners'])
-async def get_owner(owner_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def get_owner(owner_id: int = Path(ge=1, description="owner id"), db: Session = Depends(get_db)):
     owner = db.query(Owner).filter_by(id=owner_id).first()
     if owner is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -80,7 +80,7 @@ async def create_owner(body: OwnerModel, db: Session = Depends(get_db)):
 
 
 @app.put("/owners/{owner_id}", response_model=ResponseOwner, tags=['owners'])
-async def update_owner(body: OwnerModel, owner_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def update_owner(body: OwnerModel, owner_id: int = Path(ge=1), db: Session = Depends(get_db)):
     owner = db.query(Owner).filter_by(id=owner_id).first()
     if owner is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -90,7 +90,7 @@ async def update_owner(body: OwnerModel, owner_id: int = Path(1, ge=1), db: Sess
 
 
 @app.delete("/owners/{owner_id}", status_code=status.HTTP_204_NO_CONTENT, tags=['owners'])
-async def remove_owner(owner_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def remove_owner(owner_id: int = Path(ge=1), db: Session = Depends(get_db)):
     owner = db.query(Owner).filter_by(id=owner_id).first()
     if owner is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -130,7 +130,7 @@ async def get_cats(limit: int = Query(10, le=1000), offset: int = 0, db: Session
 
 
 @app.get("/cats/{cat_id}", response_model=ResponsePet, tags=['cats'])
-async def get_cat(cat_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def get_cat(cat_id: int = Path(ge=1), db: Session = Depends(get_db)):
     cat = db.query(Cat).filter_by(id=cat_id).first()
     if cat is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -147,7 +147,7 @@ async def create_cat(body: PetModel, db: Session = Depends(get_db)):
 
 
 @app.put("/cats/{cat_id}", response_model=ResponsePet, tags=['cats'])
-async def update_cat(body: PetModel, cat_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def update_cat(body: PetModel, cat_id: int = Path(ge=1), db: Session = Depends(get_db)):
     cat = db.query(Cat).filter_by(id=cat_id).first()
     if cat is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -161,7 +161,7 @@ async def update_cat(body: PetModel, cat_id: int = Path(1, ge=1), db: Session = 
 
 
 @app.patch("/cats/{cat_id}", response_model=ResponsePet, tags=['cats'])
-async def update_cat(body: PetStatusVaccinated, cat_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def update_cat(body: PetStatusVaccinated, cat_id: int = Path(ge=1), db: Session = Depends(get_db)):
     cat = db.query(Cat).filter_by(id=cat_id).first()
     if cat is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
@@ -171,7 +171,7 @@ async def update_cat(body: PetStatusVaccinated, cat_id: int = Path(1, ge=1), db:
 
 
 @app.delete("/cats/{cat_id}", status_code=status.HTTP_204_NO_CONTENT, tags=['cats'])
-async def remove_cat(cat_id: int = Path(1, ge=1), db: Session = Depends(get_db)):
+async def remove_cat(cat_id: int = Path(ge=1), db: Session = Depends(get_db)):
     cat = db.query(Cat).filter_by(id=cat_id).first()
     if cat is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not Found")
